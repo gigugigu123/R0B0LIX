@@ -1,9 +1,3 @@
-<!-- Firebase SDKs -->
-<script src="https://www.gstatic.com/firebasejs/9.24.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.24.0/firebase-database-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.24.0/firebase-auth-compat.js"></script>
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,6 +13,12 @@
     button { margin-top:18px; width:100%; padding:10px; border-radius:8px; border:none; background:#0aa7ff; color:#021; font-weight:700; cursor:pointer; }
     .note { font-size:12px; opacity:0.7; margin-top:12px; text-align:center; }
   </style>
+
+  <!-- Firebase SDKs MUST be inside <head> or at top of <body> -->
+  <script src="https://www.gstatic.com/firebasejs/9.24.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.24.0/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.24.0/firebase-auth-compat.js"></script>
+
 </head>
 <body>
   <div class="card">
@@ -39,12 +39,8 @@
     </p>
   </div>
 
-  <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/9.24.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.24.0/firebase-database-compat.js"></script>
-
+  <!-- Your main script BELOW the Firebase SDKs -->
   <script>
-    // --- Firebase config (from your project) ---
     const firebaseConfig = {
       apiKey: "AIzaSyDJ44dj8zYq_Zzh0OQEfzkC__h2c0s3WUU",
       authDomain: "r0b0lix.firebaseapp.com",
@@ -56,45 +52,35 @@
       measurementId: "G-PBQ2G89HR2"
     };
 
-    // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
-
-    // ---------- SAFE LOGIN LOGGING ----------
-    // Option C chosen: any password accepted, so result = "success"
-    // We will NOT store the email or password, only the result and timestamp and userAgent.
 
     const form = document.getElementById('loginForm');
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
 
-      // Read form values (only for local display/flow) - we DO NOT save these anywhere
+      // Read values (not saved)
       const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
 
-      // Decide result (Option C: always success)
+      // Always "success"
       const result = "success";
 
-      // Create a safe log entry with no sensitive data
       const logEntry = {
-        result: result,
+        result,
         timestamp: new Date().toISOString(),
         userAgent: navigator.userAgent
-        // NOTE: intentionally NOT storing email or password
       };
 
       try {
-        // Push the log entry to Realtime Database under /attempts
         await db.ref('attempts').push(logEntry);
-
-        // Redirect to success page (you can show a nicer message there)
-        // we can pass a small token to identify the attempt if needed (not sensitive)
         window.location.href = "success.html";
       } catch (err) {
         console.error('Failed to write log:', err);
-        alert('Network error: cannot record the attempt right now.');
+        alert('Network error: cannot record the attempt.');
       }
     });
   </script>
+
 </body>
 </html>
