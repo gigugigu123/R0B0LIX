@@ -4,6 +4,7 @@
   <meta charset="utf-8" />
   <title>R0b0lix</title>
   <meta name="viewport" content="width=device-width,initial-scale=1" />
+
   <style>
     body { font-family: Arial, sans-serif; background:#111; color:#eee; display:flex; align-items:center; justify-content:center; height:100vh; margin:0; }
     .card { background:#1f1f1f; padding:28px; border-radius:12px; width:320px; box-shadow:0 6px 18px rgba(0,0,0,0.6); }
@@ -14,32 +15,30 @@
     .note { font-size:12px; opacity:0.7; margin-top:12px; text-align:center; }
   </style>
 
-  <!-- Firebase SDKs MUST be inside <head> or at top of <body> -->
+  <!-- Firebase SDKs (ONLY THESE TWO!) -->
   <script src="https://www.gstatic.com/firebasejs/9.24.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.24.0/firebase-database-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.24.0/firebase-auth-compat.js"></script>
-
 </head>
+
 <body>
   <div class="card">
     <h1> Login </h1>
 
     <form id="loginForm" autocomplete="off">
-      <label for="email">Email </label>
-      <input id="email" name="email" type="text" placeholder="username/email" required />
+      <label for="email">Email</label>
+      <input id="email" type="text" required />
 
-      <label for="password">Password </label>
-      <input id="password" name="password" type="password" placeholder="password" required />
+      <label for="password">Password</label>
+      <input id="password" type="password" required />
 
       <button type="submit">Login</button>
     </form>
 
     <p class="note">
-      This is a safe demo. <strong>No usernames or passwords are saved.</strong> Only a harmless log entry (timestamp + result + userAgent) is recorded.
+      This is a safe demo. <strong>No usernames or passwords are saved.</strong>
     </p>
   </div>
 
-  <!-- Your main script BELOW the Firebase SDKs -->
   <script>
     const firebaseConfig = {
       apiKey: "AIzaSyDJ44dj8zYq_Zzh0OQEfzkC__h2c0s3WUU",
@@ -56,31 +55,24 @@
     const db = firebase.database();
 
     const form = document.getElementById('loginForm');
+
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
 
-      // Read values (not saved)
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-
-      // Always "success"
-      const result = "success";
-
       const logEntry = {
-        result,
+        result: "success",
         timestamp: new Date().toISOString(),
         userAgent: navigator.userAgent
       };
 
       try {
-        await db.ref('attempts').push(logEntry);
+        await db.ref("attempts").push(logEntry);
         window.location.href = "success.html";
       } catch (err) {
-        console.error('Failed to write log:', err);
-        alert('Network error: cannot record the attempt.');
+        console.error("Failed to write log:", err);
+        alert("Error saving log.");
       }
     });
   </script>
-
 </body>
 </html>
